@@ -2,6 +2,7 @@ using Assets.XRWorkshop_Test.Scripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 /// <summary>
 /// The Tool script attatches to the VR hands.
@@ -15,6 +16,8 @@ public class Tool : MonoBehaviour
     [SerializeField]
     private InteractionManager manager;
 
+    private ToolSelector currentToolSelector;
+
     private void Start()
     {
         // Tell the physics system to make tool layer ignore tool layer.
@@ -26,15 +29,23 @@ public class Tool : MonoBehaviour
         // test if other has an ForestInteractionScript
         if (other.TryGetComponent<ForestInteractable>(out ForestInteractable sceneActor))
         {
+            Assert.IsNotNull(sceneActor, "Scene actor is null");
+            Assert.IsNotNull(manager._landState, "Land state is null");
+            Assert.IsNotNull(manager._waterState, "Water state is null");
             sceneActor.TryInteract(_currentTool, manager._landState, manager._waterState);
             return;
         }
         if (other.TryGetComponent<ToolSelector>(out ToolSelector selector)) {
             if (_currentTool == selector.tool) {
                 selector.DeselectTool();
+                currentToolSelector = null;
                 _currentTool = Tool_interactions.none;
             } else {
                 selector.SelectTool();
+                if (currentToolSelector != null) { 
+                    currentToolSelector.DeselectTool();
+                }
+                currentToolSelector = selector;
                 _currentTool = selector.tool;
                 return;
             }

@@ -23,6 +23,13 @@ namespace Assets.XRWorkshop_Test.Scripts
         /// </summary>
         private bool done = false;
 
+        /// <summary>
+        /// This function is called when the interaction with this interactable is allowed to begin.
+        /// The designer must queue up events to fire the interaction starts using OnInteractStart in the inspector.
+        /// </summary>
+        /// <param name="tool"></param>
+        /// <param name="_lState"></param>
+        /// <param name="_wState"></param>
         public void TryInteract(Tool_interactions tool, landState _lState, waterState _wState) {
             if (!done && tool == getInteractionType()) {
                 if (_lState.Invoke(this) && _wState.Invoke(this)) {

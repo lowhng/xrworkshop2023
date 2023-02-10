@@ -59,6 +59,14 @@ public class InteractionManager : MonoBehaviour
         Trash.TrashRemoved += TrashRemovedObserver;
         Tree.TreeReplanted += TreeReplantedObserver;
         Water.WaterCleaned += WaterCleanedObserver;
+        // log the number of trees to plant
+        Debug.Log("Trees to plant: " + treesToPlant);
+        // log the number of waters to clean
+        Debug.Log("Waters to clean: " + watersToClean);
+        // log the number of pests to remove
+        Debug.Log("Pests to remove: " + pestsToRemove);
+        // log the number of trash to remove
+        Debug.Log("Trash to remove: " + trashToRemove);
     }
 
     private void TrashRemovedObserver()
@@ -67,6 +75,7 @@ public class InteractionManager : MonoBehaviour
         if (trashToRemove <= 0 && pestsToRemove <= 0)
         {
             _landState = AllDegradersRemoved;
+            Debug.Log("all degraders removed.");
         }
     }
 
@@ -76,6 +85,7 @@ public class InteractionManager : MonoBehaviour
         if (watersToClean <= 0)
         {
             _waterState = Clean;
+            Debug.Log("all water is clean.");
         }
     }
 
@@ -85,6 +95,7 @@ public class InteractionManager : MonoBehaviour
         if (treesToPlant <= 0)
         {
             _landState = AllTreesPlanted;
+            Debug.Log("All interactions complete, invoking all interactions complete.");
             OnInteractionsComplete.Invoke();
         }
     }
@@ -94,6 +105,7 @@ public class InteractionManager : MonoBehaviour
         pestsToRemove--;
         if (pestsToRemove <= 0 && trashToRemove <= 0)
         {
+            Debug.Log("All degraders removed.");
             _landState = AllDegradersRemoved;
         }
     }
